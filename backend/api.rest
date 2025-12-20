@@ -1,0 +1,138 @@
+POST http://localhost:8080/api/clients/register
+Content-Type: application/json
+
+{
+    "firstName": "Mouad",
+    "lastName": "Bounfil",
+    "email": "mouad.bounfil@gmail.com",
+    "phone": "+21650000000",
+    "cin": "1234567890",
+    "gender": "male",
+    "location": "Maroc",
+    "zipCode": "1000",
+    "password": "1234567",
+    "confirmPassword": "1234567"
+}
+
+
+### register admin
+
+POST http://localhost:8080/api/admins/register
+Content-Type: application/json
+
+{
+    "firstName": "admin",
+    "lastName": "admin",
+    "email": "admin@gmail.com",
+    "phone": "+21650000000",
+    "cin": "1234567890",
+    "gender": "male",
+    "location": "Maroc",
+    "zipCode": "1000",
+    "password": "1234567",
+    "confirmPassword": "1234567"
+}
+
+### login admin
+
+POST http://localhost:8080/api/admins/login
+Content-Type: application/json
+
+{
+    "email": "admin@gmail.com",
+    "password": "1234567"
+}
+
+### login client
+
+POST http://localhost:8080/api/clients/login
+Content-Type: application/json
+
+{
+    "email": "mouad.bounfil@gmail.com",
+    "password": "1234567"
+}
+
+### update admin
+
+PUT http://localhost:8080/api/admins
+Content-Type: application/json
+cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5YjlkMGIzMGNiODI1YTY2NThmMyIsImlhdCI6MTc1NTUzOTk5OX0.kQgEEt_THj_AIN4Fvnhs6CGBGHweJoeWzlhxcWj-BFY
+
+{
+    "firstName": "Mouad",
+    "lastName": "Admin",
+    "email": "admin@gmail.com",
+    "phone": "+21650000000",
+    "cin": "1234567890",
+    "gender": "male",
+    "location": "Maroc",
+    "zipCode": "1000",
+    "password": "1234567",
+    "confirmPassword": "1234567"
+}
+
+
+
+### CREATE APPLICATION
+
+POST http://localhost:8080/api/applications
+Content-Type: application/json
+cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5OWE4MmRmNGM3YWNhYmE4YWY0NiIsImlhdCI6MTc1NTA5MzU2OH0.mzC38Ps6FTWgmaqbvYPj4nYbRvTMRKVRnu1hS9TcvMM
+
+{
+    "monthly_income": 1800,
+    "employment_type": "Part-time Retail Worker",
+    "employment_duration": "3 months",
+    
+    "requested_amount": 15000,
+    "duration": 48,
+    "purpose": "Vacation and entertainment expenses",
+    
+    "credit_history": "Poor - multiple missed payments, two accounts in collections, 90% credit card utilization",
+    "existing_debts": "Personal loan: $500/month, Credit cards: $400/month minimum payments, Payday loan: $300/month",
+    
+    "motivation": "I want to take a luxury vacation to Europe. I know my credit isn't great and I have some other loans, but I really need this vacation to reduce stress. I'm sure I can figure out how to make the payments somehow."
+}
+
+### get client applications
+
+GET http://localhost:8080/api/applications
+Content-Type: application/json
+cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5YjlkMGIzMGNiODI1YTY2NThmMyIsImlhdCI6MTc1NTA5Mzk2MX0.RDjNivWTLFKxq7F6bFZwPNpH4KDtt1gDjlYxvGPZSSg
+
+
+
+### login admin
+
+POST http://localhost:8080/api/admins/login
+Content-Type: application/json
+
+{
+    "email": "admin@gmail.com",
+    "password": "1234567"
+}
+
+
+
+
+### get all applications
+
+GET http://localhost:8080/api/applications?limit=10&page=1
+Content-Type: application/json
+cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5YjlkMGIzMGNiODI1YTY2NThmMyIsImlhdCI6MTc1NTI4NDg3N30.c2nt1LOQgwTbcBAQrLR5eo5MW7bPATJvTZPX7vMhTAg
+
+
+### get all clients
+
+GET http://localhost:8080/api/clients/clients
+Content-Type: application/json
+
+
+
+### get stats
+
+GET http://localhost:8080/api/stats
+Content-Type: application/json
+cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5YjlkMGIzMGNiODI1YTY2NThmMyIsImlhdCI6MTc1NTI4NDg3N30.c2nt1LOQgwTbcBAQrLR5eo5MW7bPATJvTZPX7vMhTAg
+

@@ -1,0 +1,18 @@
+POST http://localhost:5000/api/evaluate-credit
+Content-Type: application/json
+
+{
+    "name": "John Smith",
+    "monthly_income": 1800,
+    "employment_type": "Part-time Retail Worker",
+    "employment_duration": "3 months",
+    
+    "requested_amount": 15000,
+    "duration": 48,
+    "purpose": "Vacation and entertainment expenses",
+    
+    "credit_history": "Poor - multiple missed payments, two accounts in collections, 90% credit card utilization",
+    "existing_debts": "Personal loan: $500/month, Credit cards: $400/month minimum payments, Payday loan: $300/month",
+    
+    "motivation": "I want to take a luxury vacation to Europe. I know my credit isn't great and I have some other loans, but I really need this vacation to reduce stress. I'm sure I can figure out how to make the payments somehow."
+}

@@ -1,0 +1,22 @@
+GET http://localhost:5000/api/health
+
+###
+
+POST http://localhost:5000/api/evaluate-credit
+Content-Type: application/json
+
+{
+    "name": "Sarah Johnson",
+    "monthly_income": 4500,
+    "employment_type": "Full-time Software Engineer",
+    "employment_duration": "3 years",
+    
+    "requested_amount": 2500,
+    "duration": 18,
+    "purpose": "Purchase laptop for remote work and professional development courses",
+    
+    "credit_history": "Good - no missed payments in last 2 years, one credit card with 30% utilization",
+    "existing_debts": "Car loan: $350/month, Credit card: $150/month minimum payment",
+    
+    "motivation": "I need a high-performance laptop for my software development work and online courses. My current laptop is 5 years old and causing productivity issues. I have stable income and can comfortably afford the monthly payments."
+}

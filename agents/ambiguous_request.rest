@@ -1,0 +1,18 @@
+POST http://localhost:5000/api/evaluate-credit
+Content-Type: application/json
+
+{
+    "name": "Michael Chen",
+    "monthly_income": 4200,
+    "employment_type": "Freelance Web Developer",
+    "employment_duration": "2 years",
+    
+    "requested_amount": 8000,
+    "duration": 24,
+    "purpose": "Purchase professional equipment and create home office",
+    
+    "credit_history": "Fair - had two late payments last year but caught up quickly, currently at 75% credit utilization, recently paid off a personal loan successfully",
+    "existing_debts": "Student loans: $400/month, Credit card: $200/month minimum payment, Car lease: $300/month",
+    
+    "motivation": "I need to set up a proper home office with high-end equipment to secure more stable freelance contracts. I have some promising client opportunities lined up, but my current setup is limiting my ability to take on more complex projects. While my credit isn't perfect, my income has been growing steadily over the past 6 months, and I've been receiving positive client reviews."
+}
