@@ -34,28 +34,28 @@ const Register = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.firstName.trim()) newErrors.firstName = "Le prénom est requis";
-    if (!formData.lastName.trim()) newErrors.lastName = "Le nom est requis";
+    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
     if (!formData.email.trim()) {
-      newErrors.email = "L'email est requis";
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Veuillez entrer un email valide";
+      newErrors.email = "Please enter a valid email";
     }
-    if (!formData.phone.trim()) newErrors.phone = "Le numéro de téléphone est requis";
-    if (!formData.cin.trim()) newErrors.cin = "TC Kimlik No gereklidir";
-    else if (formData.cin.trim().length !== 11) newErrors.cin = "TC Kimlik No 11 haneli olmalıdır";
-    if (!formData.gender) newErrors.gender = "Le genre est requis";
-    if (!formData.location.trim()) newErrors.location = "La localisation est requise";
-    if (!formData.zipCode.trim()) newErrors.zipCode = "Le code postal est requis";
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+    if (!formData.cin.trim()) newErrors.cin = "TC Kimlik No is required";
+    else if (formData.cin.trim().length !== 11) newErrors.cin = "TC Kimlik No must be 11 digits";
+    if (!formData.gender) newErrors.gender = "Gender is required";
+    if (!formData.location.trim()) newErrors.location = "Location is required";
+    if (!formData.zipCode.trim()) newErrors.zipCode = "Zip code is required";
     if (!formData.password) {
-      newErrors.password = "Le mot de passe est requis";
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Le mot de passe doit contenir au moins 6 caractères";
+      newErrors.password = "Password must be at least 6 characters";
     }
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Veuillez confirmer votre mot de passe";
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(newErrors);
@@ -69,7 +69,7 @@ const Register = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/clients/register`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/clients/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,13 +81,13 @@ const Register = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Inscription réussie ! Veuillez vous connecter pour continuer.");
+        alert("Registration successful! Please log in to continue.");
         navigate("/login");
       } else {
-        setErrors({ submit: data.message || "L'inscription a échoué" });
+        setErrors({ submit: data.message || "Registration failed" });
       }
     } catch (error) {
-      setErrors({ submit: "Erreur réseau. Veuillez réessayer." });
+      setErrors({ submit: "Network error. Please try again." });
     } finally {
       setIsLoading(false);
     }
@@ -101,28 +101,28 @@ const Register = () => {
           <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-600 via-blue-600 to-blue-700 relative">
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="relative z-10 p-12 flex flex-col justify-center text-white">
-              <h1 className="text-4xl font-bold mb-6">Créez votre compte</h1>
+              <h1 className="text-4xl font-bold mb-6">Create Your Account</h1>
               <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                Rejoignez-nous pour accéder à des crédits rapides et faciles pour vos achats électroniques.
+                Join us to access fast and easy loans for your purchases.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                     <User className="w-4 h-4" />
                   </div>
-                  <span>Processus de demande rapide</span>
+                  <span>Fast application process</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                     <CreditCard className="w-4 h-4" />
                   </div>
-                  <span>Crédits flexibles et adaptés</span>
+                  <span>Flexible and tailored loans</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                     <MapPin className="w-4 h-4" />
                   </div>
-                  <span>Service disponible partout au Maroc</span>
+                  <span>Service available everywhere</span>
                 </div>
               </div>
             </div>
@@ -131,8 +131,8 @@ const Register = () => {
           {/* Right Side - Form */}
           <div className="w-full lg:w-1/2 p-8 lg:p-12">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">S'inscrire</h2>
-              <p className="text-gray-600">Remplissez vos informations pour commencer</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Sign Up</h2>
+              <p className="text-gray-600">Fill in your information to get started</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -146,7 +146,7 @@ const Register = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Prénom
+                    First Name
                   </label>
                   <div className="relative">
                     <input
@@ -155,7 +155,7 @@ const Register = () => {
                       value={formData.firstName}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                      placeholder="Entrez votre prénom"
+                      placeholder="Enter your first name"
                     />
                     <User className="absolute right-3 top-3.5 w-4 h-4 text-gray-400" />
                   </div>
@@ -164,7 +164,7 @@ const Register = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nom
+                    Last Name
                   </label>
                   <div className="relative">
                     <input
@@ -173,7 +173,7 @@ const Register = () => {
                       value={formData.lastName}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                      placeholder="Entrez votre nom"
+                      placeholder="Enter your last name"
                     />
                     <User className="absolute right-3 top-3.5 w-4 h-4 text-gray-400" />
                   </div>
@@ -193,7 +193,7 @@ const Register = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                    placeholder="Entrez votre email"
+                    placeholder="Enter your email"
                   />
                   <Mail className="absolute right-3 top-3.5 w-4 h-4 text-gray-400" />
                 </div>
@@ -204,7 +204,7 @@ const Register = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Téléphone
+                    Phone
                   </label>
                   <div className="relative">
                     <input
@@ -213,7 +213,7 @@ const Register = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                      placeholder="Numéro de téléphone"
+                      placeholder="Phone number"
                     />
                     <Phone className="absolute right-3 top-3.5 w-4 h-4 text-gray-400" />
                   </div>
@@ -232,7 +232,7 @@ const Register = () => {
                       onChange={handleChange}
                       maxLength="11"
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                      placeholder="11 haneli TC Kimlik No"
+                      placeholder="11 digit TC Kimlik No"
                     />
                     <CreditCard className="absolute right-3 top-3.5 w-4 h-4 text-gray-400" />
                   </div>
@@ -243,7 +243,7 @@ const Register = () => {
               {/* Gender */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Genre
+                  Gender
                 </label>
                 <select
                   name="gender"
@@ -251,10 +251,10 @@ const Register = () => {
                   onChange={handleChange}
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
                 >
-                  <option value="">Sélectionnez votre genre</option>
-                  <option value="Male">Homme</option>
-                  <option value="Female">Femme</option>
-                  <option value="Other">Autre</option>
+                  <option value="">Select your gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
                 </select>
                 {errors.gender && <p className="text-red-500 text-xs mt-1">{errors.gender}</p>}
               </div>
@@ -263,7 +263,7 @@ const Register = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ville
+                    City
                   </label>
                   <div className="relative">
                     <input
@@ -272,7 +272,7 @@ const Register = () => {
                       value={formData.location}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                      placeholder="Votre ville"
+                      placeholder="Your city"
                     />
                     <MapPin className="absolute right-3 top-3.5 w-4 h-4 text-gray-400" />
                   </div>
@@ -281,7 +281,7 @@ const Register = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Code postal
+                    Zip Code
                   </label>
                   <input
                     type="text"
@@ -289,7 +289,7 @@ const Register = () => {
                     value={formData.zipCode}
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                    placeholder="Code postal"
+                    placeholder="Zip code"
                   />
                   {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
                 </div>
@@ -299,7 +299,7 @@ const Register = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Mot de passe
+                    Password
                   </label>
                   <div className="relative">
                     <input
@@ -308,7 +308,7 @@ const Register = () => {
                       value={formData.password}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                      placeholder="Mot de passe"
+                      placeholder="Password"
                     />
                     <button
                       type="button"
@@ -323,7 +323,7 @@ const Register = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Confirmer le mot de passe
+                    Confirm Password
                   </label>
                   <div className="relative">
                     <input
@@ -332,7 +332,7 @@ const Register = () => {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                      placeholder="Confirmer le mot de passe"
+                      placeholder="Confirm password"
                     />
                     <button
                       type="button"
@@ -355,22 +355,22 @@ const Register = () => {
                 {isLoading ? (
                   <div className="flex items-center justify-center">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
-                    Création du compte...
+                    Creating account...
                   </div>
                 ) : (
-                  "Créer un compte"
+                  "Create Account"
                 )}
               </button>
 
               {/* Login Link */}
               <div className="text-center">
                 <p className="text-gray-600">
-                  Vous avez déjà un compte ?{" "}
+                  Already have an account?{" "}
                   <Link
                     to="/login"
                     className="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors"
                   >
-                    Connectez-vous ici
+                    Sign in here
                   </Link>
                 </p>
               </div>

@@ -7,13 +7,18 @@ const initialState = {
   error: null,
   isAuthenticated: false,
   isAdmin: false,
+  successMessage: null,
+  applications: [],
+  currentApplication: null,
+  registrationData: null,
+  loginData: null,
 };
 
 export const getCurrentUser = createAsyncThunk(
   "user/getCurrentUser",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/clients/me`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/clients/me`, {
         withCredentials: true,
       });
       return response.data.user;
@@ -30,7 +35,7 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/clients/login`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/clients/login`,
         credentials,
         {
           withCredentials: true,
@@ -50,7 +55,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/clients/logout`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/clients/logout`,
         {
           withCredentials: true,
         }
@@ -67,7 +72,17 @@ export const logout = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+    clearSuccessMessage: (state) => {
+      state.successMessage = null;
+    },
+    resetUserState: (state) => {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
       state.isLoading = true;
@@ -79,7 +94,9 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.currentUser = action.payload;
       state.isAuthenticated = true;
-      state.isAdmin = action.payload.role === "admin" ? true : false;
+      state.isAdmin = action.payload?.role === "admin" ? true : false;
+      state.successMessage = "Login successful";
+      state.error = null;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.isLoading = false;
@@ -116,7 +133,8 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.currentUser = action.payload;
       state.isAuthenticated = true;
-      state.isAdmin = action.payload.role === "admin" ? true : false;
+      state.isAdmin = action.payload?.role === "admin" ? true : false;
+      state.error = null;
     });
     builder.addCase(getCurrentUser.rejected, (state, action) => {
       state.isLoading = false;

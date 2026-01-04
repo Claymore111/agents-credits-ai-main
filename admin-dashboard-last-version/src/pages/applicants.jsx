@@ -77,7 +77,7 @@ export default function Applicants() {
         query.append("page", pagination.page);
         const response = await axios.get(
           `${
-            process.env.REACT_APP_API_URL
+            process.env.REACT_APP_API_BASE_URL
           }/api/applications?${query.toString()}`,
           {
             withCredentials: true,

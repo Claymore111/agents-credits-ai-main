@@ -36,6 +36,7 @@ const ApplyPage = () => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [applicationData, setApplicationData] = useState(null);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -62,17 +63,74 @@ const ApplyPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
-  const next = () => setStep((s) => Math.min(totalSteps, s + 1));
+  const validateStep = (currentStep) => {
+    const newErrors = {};
+
+    if (currentStep === 1) {
+      if (!formData.monthly_income || formData.monthly_income <= 0) {
+        newErrors.monthly_income = "Monthly income is required and must be greater than 0";
+      }
+      if (!formData.employment_type) {
+        newErrors.employment_type = "Please select an employment type";
+      }
+      if (!formData.employment_duration || formData.employment_duration.trim() === "") {
+        newErrors.employment_duration = "Employment duration is required";
+      }
+    }
+
+    if (currentStep === 2) {
+      if (!formData.requested_amount || formData.requested_amount <= 0) {
+        newErrors.requested_amount = "Requested amount is required and must be greater than 0";
+      }
+      if (!formData.duration || formData.duration <= 0) {
+        newErrors.duration = "Duration is required and must be greater than 0";
+      }
+      if (!formData.purpose || formData.purpose.trim() === "") {
+        newErrors.purpose = "Please describe the purpose of your loan";
+      }
+      if (!formData.category) {
+        newErrors.category = "Please select a loan category";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const next = () => {
+    if (validateStep(step)) {
+      setStep((s) => Math.min(totalSteps, s + 1));
+    } else {
+      // Scroll to top to show errors
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  
   const prev = () => setStep((s) => Math.max(1, s - 1));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate all steps before submission
+    const allStepsValid = validateStep(1) && validateStep(2);
+    
+    if (!allStepsValid) {
+      alert("Please complete all required fields before submitting.");
+      return;
+    }
+    
     setIsLoading(true);
+    setErrors({});
+    
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/applications`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/applications`,
         {
           ...formData,
         },
@@ -88,10 +146,12 @@ const ApplyPage = () => {
       } else {
         console.log(response);
         setIsLoading(false);
+        alert("Failed to submit application. Please try again.");
       }
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      alert("An error occurred while submitting your application. Please try again.");
     }
   };
 
@@ -138,47 +198,78 @@ const ApplyPage = () => {
         {step === 1 && (
           <div className="flex flex-col gap-6 animate-fade-right">
             <h2 className="text-2xl font-semibold">Employment & Income</h2>
+            
+            {Object.keys(errors).length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-red-600 text-sm font-semibold mb-2">Please fix the following errors:</p>
+                <ul className="list-disc list-inside text-red-600 text-sm space-y-1">
+                  {Object.values(errors).map((error, idx) => (
+                    <li key={idx}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold">
-                  Monthly income (USD)
+                  Monthly income (USD) <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="monthly_income"
                   type="number"
                   value={formData.monthly_income}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect"
+                  className={`border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect ${
+                    errors.monthly_income ? "border-red-500 bg-red-50" : "border-gray-300"
+                  }`}
                   required
                 />
+                {errors.monthly_income && (
+                  <p className="text-red-500 text-xs mt-1">{errors.monthly_income}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold">Employment type</label>
+                <label className="text-sm font-semibold">
+                  Employment type <span className="text-red-500">*</span>
+                </label>
                <select
                   name="employment_type"
                   value={formData.employment_type}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect"
+                  className={`border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect ${
+                    errors.employment_type ? "border-red-500 bg-red-50" : "border-gray-300"
+                  }`}
+                  required
                 >
+                  <option value="">Select employment type</option>
                   {employmentTypes.map((type) => (
                     <option key={type.id} value={type.title}>
                       {type.title}
                     </option>
                   ))}
                 </select>
+                {errors.employment_type && (
+                  <p className="text-red-500 text-xs mt-1">{errors.employment_type}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2 md:col-span-2">
                 <label className="text-sm font-semibold">
-                  Employment duration
+                  Employment duration <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="employment_duration"
                   value={formData.employment_duration}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect"
+                  className={`border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect ${
+                    errors.employment_duration ? "border-red-500 bg-red-50" : "border-gray-300"
+                  }`}
                   placeholder="e.g., 2 years"
                   required
                 />
+                {errors.employment_duration && (
+                  <p className="text-red-500 text-xs mt-1">{errors.employment_duration}</p>
+                )}
               </div>
             </div>
           </div>
@@ -187,58 +278,96 @@ const ApplyPage = () => {
         {step === 2 && (
           <div className="flex flex-col gap-6 animate-fade-in-up">
             <h2 className="text-2xl font-semibold">Loan Details</h2>
+            
+            {Object.keys(errors).length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-red-600 text-sm font-semibold mb-2">Please fix the following errors:</p>
+                <ul className="list-disc list-inside text-red-600 text-sm space-y-1">
+                  {Object.values(errors).map((error, idx) => (
+                    <li key={idx}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold">
-                  Requested amount (USD)
+                  Requested amount (USD) <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="requested_amount"
                   type="number"
                   value={formData.requested_amount}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect"
+                  className={`border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect ${
+                    errors.requested_amount ? "border-red-500 bg-red-50" : "border-gray-300"
+                  }`}
                   required
                 />
+                {errors.requested_amount && (
+                  <p className="text-red-500 text-xs mt-1">{errors.requested_amount}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold">
-                  Duration (months)
+                  Duration (months) <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="duration"
                   type="number"
                   value={formData.duration}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect"
+                  className={`border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect ${
+                    errors.duration ? "border-red-500 bg-red-50" : "border-gray-300"
+                  }`}
                   required
                 />
+                {errors.duration && (
+                  <p className="text-red-500 text-xs mt-1">{errors.duration}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2 md:col-span-2">
-                <label className="text-sm font-semibold">Purpose</label>
+                <label className="text-sm font-semibold">
+                  Purpose <span className="text-red-500">*</span>
+                </label>
                 <textarea
                   name="purpose"
                   value={formData.purpose}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md p-3 min-h-[90px] focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect"
+                  className={`border rounded-md p-3 min-h-[90px] focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect ${
+                    errors.purpose ? "border-red-500 bg-red-50" : "border-gray-300"
+                  }`}
                   placeholder="Tell us how you'll use the funds"
                   required
                 />
+                {errors.purpose && (
+                  <p className="text-red-500 text-xs mt-1">{errors.purpose}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2 md:col-span-2">
-                <label className="text-sm font-semibold">Category</label>
+                <label className="text-sm font-semibold">
+                  Category <span className="text-red-500">*</span>
+                </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect"
+                  className={`border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 form-input-effect ${
+                    errors.category ? "border-red-500 bg-red-50" : "border-gray-300"
+                  }`}
+                  required
                 >
+                  <option value="">Select a category</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.title}>
                       {category.title}
                     </option>
                   ))}
                 </select>
+                {errors.category && (
+                  <p className="text-red-500 text-xs mt-1">{errors.category}</p>
+                )}
               </div>
             </div>
           </div>

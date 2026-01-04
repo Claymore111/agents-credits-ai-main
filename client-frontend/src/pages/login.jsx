@@ -48,9 +48,9 @@ export default function Login() {
       <div className="w-full max-w-[420px] bg-white rounded-2xl shadow-2xl p-8 transform transition-all duration-300 hover:scale-[1.02]">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
-            Bienvenue
+            Welcome
           </h1>
-          <p className="text-gray-600 mt-2">Connectez-vous à votre compte</p>
+          <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -67,7 +67,7 @@ export default function Login() {
                 id="email"
                 name="email"
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-colors"
-                placeholder="votre@email.com"
+                placeholder="your@email.com"
               />
             </div>
           </div>
@@ -77,7 +77,7 @@ export default function Login() {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Mot de passe
+              Password
             </label>
             <div className="relative">
               <input
@@ -94,16 +94,16 @@ export default function Login() {
             type="submit"
             className="w-full py-3 px-4 rounded-lg text-white font-medium bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 transform transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Se connecter
+            Sign In
           </button>
 
           <div className="mt-4 text-center">
-            <p className="text-sm text-gray-500">Vous n'avez pas de compte ?</p>
+            <p className="text-sm text-gray-500">Don't have an account?</p>
             <Link
               to="/register"
               className="text-sm text-blue-600 hover:text-blue-700"
             >
-              Créez-en un
+              Create one
             </Link>
           </div>
 

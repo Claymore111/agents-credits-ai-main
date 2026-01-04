@@ -7,11 +7,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Initialize OpenAI client
-BASE_URL = os.getenv("OPENAI_BASE_URL")
-API_KEY = os.getenv("OPENAI_API_KEY")
+# Initialize GitHub Models client
+# GitHub Models API endpoint
+BASE_URL = "https://models.inference.ai.azure.com"
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
-client = OpenAI(base_url=BASE_URL, api_key=API_KEY)
+if not GITHUB_TOKEN:
+    raise ValueError("GITHUB_TOKEN environment variable is not set. Please set your GitHub personal access token.")
+
+client = OpenAI(base_url=BASE_URL, api_key=GITHUB_TOKEN)
 
 
 # --------------------------------------------------------------

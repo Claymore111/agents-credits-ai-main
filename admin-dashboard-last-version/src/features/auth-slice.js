@@ -6,6 +6,15 @@ const initialState = {
   isLoading: false,
   error: null,
   isAuthenticated: false,
+  successMessage: null,
+  applications: [],
+  currentApplication: null,
+  stats: null,
+  filters: {
+    status: '',
+    searchTerm: '',
+    sortBy: 'createdAt',
+  },
 };
 
 export const getCurrentAdmin = createAsyncThunk(
@@ -13,7 +22,7 @@ export const getCurrentAdmin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/admins/me`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/admins/me`,
         {
           withCredentials: true,
         }
@@ -32,7 +41,7 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/admins/login`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/admins/login`,
         credentials,
         {
           withCredentials: true,
@@ -52,7 +61,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/admins/logout`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/admins/logout`,
         {
           withCredentials: true,
         }
@@ -69,7 +78,29 @@ export const logout = createAsyncThunk(
 const adminSlice = createSlice({
   name: "admin",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+    clearSuccessMessage: (state) => {
+      state.successMessage = null;
+    },
+    setApplications: (state, action) => {
+      state.applications = action.payload;
+    },
+    setCurrentApplication: (state, action) => {
+      state.currentApplication = action.payload;
+    },
+    setStats: (state, action) => {
+      state.stats = action.payload;
+    },
+    setFilters: (state, action) => {
+      state.filters = { ...state.filters, ...action.payload };
+    },
+    resetAuthState: (state) => {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
       state.isLoading = true;
@@ -80,6 +111,8 @@ const adminSlice = createSlice({
       state.isLoading = false;
       state.currentAdmin = action.payload;
       state.isAuthenticated = true;
+      state.successMessage = "Login successful";
+      state.error = null;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.isLoading = false;
@@ -111,6 +144,7 @@ const adminSlice = createSlice({
       state.isLoading = false;
       state.currentAdmin = action.payload;
       state.isAuthenticated = true;
+      state.error = null;
     });
     builder.addCase(getCurrentAdmin.rejected, (state, action) => {
       state.isLoading = false;
