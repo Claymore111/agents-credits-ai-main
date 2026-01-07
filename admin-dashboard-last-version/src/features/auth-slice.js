@@ -22,7 +22,7 @@ export const getCurrentAdmin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/api/admins/me`,
+        `${process.env.REACT_APP_API_BASE_URL}/admins/me`,
         {
           withCredentials: true,
         }
@@ -41,7 +41,7 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/admins/login`,
+        `${process.env.REACT_APP_API_BASE_URL}/admins/login`,
         credentials,
         {
           withCredentials: true,
@@ -61,7 +61,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/admins/logout`,
+        `${process.env.REACT_APP_API_BASE_URL}/admins/logout`,
         {
           withCredentials: true,
         }

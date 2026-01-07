@@ -69,7 +69,7 @@ const Register = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/admins/register`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/admins/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

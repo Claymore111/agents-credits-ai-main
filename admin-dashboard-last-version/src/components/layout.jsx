@@ -21,7 +21,7 @@ function Layout() {
       label: "Applicants",
       icon: Users,
       path: "/applicants",
-      badge: "12",
+      badge: "",
     },
   ];
 

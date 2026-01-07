@@ -27,7 +27,7 @@ export default function ApplicantDetails({ applicantId }) {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/api/applications/${applicantId}`,
+          `${process.env.REACT_APP_API_BASE_URL}/applications/${applicantId}`,
           {
             withCredentials: true,
           }

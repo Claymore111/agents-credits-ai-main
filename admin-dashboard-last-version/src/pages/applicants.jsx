@@ -78,7 +78,7 @@ export default function Applicants() {
         const response = await axios.get(
           `${
             process.env.REACT_APP_API_BASE_URL
-          }/api/applications?${query.toString()}`,
+          }/applications?${query.toString()}`,
           {
             withCredentials: true,
           }
